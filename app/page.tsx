@@ -212,10 +212,3 @@ export default function Home() {
     </main>
   );
 }
-  //const odGroups = [
-    //{ name: 'LONG', type: 'S1B' },
-    //{ name: 'MID', type: 'S3B' },
-    //{ name: 'WIN', type: 'S9A' },
-    //{ name: 'Non-London', type: 'S1B' },
-    //{ name: 'Non-AP', type: 'SDS' },
-  //];
