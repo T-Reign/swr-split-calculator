@@ -50,7 +50,7 @@ const stationOrder = [
   "Weymouth",
 ];
 //The list below isn't LIVE, it's just for the future chartdata for when the chart gets crowded with different stations. (Sandbox also keeps changing it, idk why)
-const stationAbbreviations = {
+/*const stationAbbreviations = {
   "London Terminals": "LON",
   "Clapham Junction": "CLJ",
   "Wimbledon": "WIM",
@@ -83,7 +83,7 @@ const stationAbbreviations = {
   "Dorchester South": "DCH",
   "Upwey": "UPW",
   "Weymouth": "WEY",
-};
+};*/
 
 export default function Home() {
   const [origin, setOrigin] = useState("London Terminals");
@@ -113,7 +113,7 @@ export default function Home() {
     if (saving.trim().startsWith("-")) return -number;
     return number;
   };
-
+  //This section associates the O-D with the relevant "OD Group" in the fares.json file
   const mappedFares = useMemo(() => {
     return fares.map((item: any) => ({
       origin: toTitleCase(item.ORIGIN_DESCRIPTION),
@@ -150,7 +150,6 @@ export default function Home() {
     });
   }, [routeStations]);
 
-  // 1. Define these FIRST
   const ODGroupConfig = useMemo(() => {
     return ODGroups.reduce((acc, group) => {
       acc[group.name] = group.type;
@@ -172,7 +171,7 @@ export default function Home() {
     return "N/A";
   }, [mappedFares, origin, destination]);
 
-  const selectedFareType = ODGroupConfig[ODGroup] || "S3B";
+  const selectedFareType = ODGroupConfig[ODGroup];
 
   const testFare = useMemo(() => {
     return mappedFares.find(
@@ -199,7 +198,10 @@ export default function Home() {
       for (const groupName of priority) {
         const match = allMatches.find((f) => f.ODGroup === groupName);
         if (match) {
-          const type = ODGroupConfig[match.ODGroup] || "S3B";
+          const type = ODGroupConfig[match.ODGroup];
+
+          if (!type) return null;
+
           return allMatches.find((f) => f.fareType === type);
         }
       }
